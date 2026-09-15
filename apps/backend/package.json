@@ -1,0 +1,42 @@
+{
+  "name": "petronect-behavior-backend",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Backend serverless do MVP de comportamento de fornecedores Petronect",
+  "main": "src/local.ts",
+  "scripts": {
+    "dev": "tsx watch src/local.ts",
+    "start": "tsx src/local.ts",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
+    "package:aws": "osls package",
+    "deploy:aws": "osls deploy",
+    "remove:aws": "osls remove",
+    "reset:local": "tsx scripts/reset-local.ts"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.1131.0",
+    "@aws-sdk/lib-dynamodb": "^3.1131.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.152",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/node": "^22.15.0",
+    "@eslint/js": "^9.16.0",
+    "esbuild": "^0.28.2",
+    "eslint": "^9.16.0",
+    "globals": "^15.13.0",
+    "osls": "^4.3.1",
+    "serverless-esbuild": "^1.57.2",
+    "tsx": "^4.23.13",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.18.0"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

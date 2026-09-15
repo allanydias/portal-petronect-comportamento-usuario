@@ -1,0 +1,15 @@
+node_modules/
+dist/
+.env
+.env.local
+.data/
+.serverless/
+.esbuild/
+.DS_Store
+Thumbs.db
+coverage/
+*.log
+.vscode/
+.idea/
+*.zip
+_extract/

@@ -1,0 +1,9 @@
+node_modules
+dist
+.data
+.serverless
+.esbuild
+coverage
+*.zip
+_extract
+package-lock.json
