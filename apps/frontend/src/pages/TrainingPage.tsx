@@ -1,4 +1,5 @@
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { SearchBox } from "@/components/common/SearchBox";
 import { TrainingCard } from "@/components/training/TrainingCard";
 import { VideoTutorialCard } from "@/components/training/VideoTutorialCard";
@@ -26,6 +27,7 @@ const videos = [
 export function TrainingPage() {
   const { t } = useTranslation();
   const { track } = useTracking("training");
+  const navigate = useNavigate();
 
   const search = async (keyword: string) => {
     const normalized = keyword.toLowerCase();
@@ -48,6 +50,26 @@ export function TrainingPage() {
       keyword,
       interest
     });
+  };
+
+  const handleLiveSignup = async () => {
+    await track({
+      eventName: "live_signup_click",
+      section: "treinamentos-ao-vivo",
+      itemId: "treinamento-fornecedores",
+      interest: "Treinamentos"
+    });
+    navigate("/tools");
+  };
+
+  const handleAuctionSimulator = async () => {
+    await track({
+      eventName: "auction_simulator_click",
+      section: "Leilões",
+      itemId: "simulado-leilao-reverso",
+      interest: "Leilões"
+    });
+    navigate("/tools");
   };
 
   return (
@@ -109,17 +131,7 @@ export function TrainingPage() {
             <p className="text-sm text-slate-500">
               22/09/2026 · 14:00 · Sessão demonstrativa sobre participação em processos.
             </p>
-            <Button
-              className="mt-4"
-              onClick={() =>
-                void track({
-                  eventName: "live_signup_click",
-                  section: "treinamentos-ao-vivo",
-                  itemId: "treinamento-fornecedores",
-                  interest: "Treinamentos"
-                })
-              }
-            >
+            <Button className="mt-4" onClick={handleLiveSignup}>
               Inscrever-se
             </Button>
           </CardContent>
@@ -133,17 +145,7 @@ export function TrainingPage() {
             <p className="text-sm text-slate-500">
               Demonstre intenção real antes de um processo de compra.
             </p>
-            <Button
-              className="mt-4"
-              onClick={() =>
-                void track({
-                  eventName: "auction_simulator_click",
-                  section: "Leilões",
-                  itemId: "simulado-leilao-reverso",
-                  interest: "Leilões"
-                })
-              }
-            >
+            <Button className="mt-4" onClick={handleAuctionSimulator}>
               Participar do simulado
             </Button>
           </CardContent>
