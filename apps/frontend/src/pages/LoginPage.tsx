@@ -31,11 +31,11 @@ export function LoginPage() {
     watch,
     formState: { errors }
   } = useForm<LoginFormValues>({
-    resolver: zodResolver(loginFormSchema),
+    resolver: zodResolver(loginFormSchema as any),
     defaultValues: {
       cnpj: "12.345.678/0001-95",
-      role: "Comercial"
-    }
+      role: "Comprador",
+    },
   });
 
   useEffect(() => {
@@ -101,7 +101,7 @@ export function LoginPage() {
                   </SelectTrigger>
                   <SelectContent>
                     {roles.map((role) => (
-                      <SelectItem key={role} value={role}>
+                      <SelectItem key={role} value={String(role)}>
                         {role}
                       </SelectItem>
                     ))}

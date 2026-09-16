@@ -17,16 +17,18 @@
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.1131.0",
     "@aws-sdk/lib-dynamodb": "^3.1131.0",
+    "@upstash/redis": "^1.38.4",
     "cors": "^2.8.5",
     "express": "^5.1.0",
     "zod": "^4.6.5"
   },
   "devDependencies": {
+    "@eslint/js": "^9.16.0",
     "@types/aws-lambda": "^8.10.152",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/node": "^22.15.0",
-    "@eslint/js": "^9.16.0",
+    "@vercel/node": "^13.0.1",
     "esbuild": "^0.28.2",
     "eslint": "^9.16.0",
     "globals": "^15.13.0",

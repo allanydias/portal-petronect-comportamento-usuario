@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { SearchBox } from "@/components/common/SearchBox";
 import { ToolCard } from "@/components/tools/ToolCard";
@@ -59,6 +60,41 @@ const tools: Array<{
 export function ToolsPage() {
   const { t } = useTranslation();
   const { track } = useTracking("tools");
+  const [searchKeyword, setSearchKeyword] = useState("");
+
+  const filterTools = (keyword: string) => {
+    const normalized = keyword.toLowerCase();
+    return tools.filter((tool) =>
+      tool.title.toLowerCase().includes(normalized) ||
+      tool.description.toLowerCase().includes(normalized) ||
+      tool.category.toLowerCase().includes(normalized)
+    );
+  };
+
+  const handleSearch = async (keyword: string) => {
+    setSearchKeyword(keyword);
+
+    if (!keyword.trim()) return;
+
+    const normalized = keyword.toLowerCase();
+    const interest = normalized.includes("ncm")
+      ? "NCM"
+      : normalized.includes("cert")
+        ? "Certidões"
+        : normalized.includes("preço") || normalized.includes("preco")
+          ? "Financeiro"
+          : "Outros";
+
+    await track({
+      eventName: "search_keyword",
+      section: "busca",
+      itemId: "busca-ferramentas",
+      keyword,
+      interest
+    });
+  };
+
+  const filteredTools = filterTools(searchKeyword);
 
   return (
     <main className="page-shell space-y-6">
@@ -69,39 +105,38 @@ export function ToolsPage() {
 
       <Card>
         <CardContent className="p-5">
-          <SearchBox
-            onSearch={async (keyword) => {
-              const normalized = keyword.toLowerCase();
-              const interest = normalized.includes("ncm")
-                ? "NCM"
-                : normalized.includes("cert")
-                  ? "Certidões"
-                  : normalized.includes("preço") || normalized.includes("preco")
-                    ? "Financeiro"
-                    : "Outros";
-
-              await track({
-                eventName: "search_keyword",
-                section: "busca",
-                itemId: "busca-ferramentas",
-                keyword,
-                interest
-              });
-            }}
-          />
+          <SearchBox onSearch={handleSearch} />
         </CardContent>
       </Card>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {tools.map((tool) => (
-          <ToolCard
-            key={tool.title}
-            {...tool}
-            itemId={tool.title.toLowerCase().replaceAll(" ", "-")}
-            onTrack={track}
-          />
-        ))}
-      </div>
+      {searchKeyword && (
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-slate-600">
+            Resultados para: <strong>"{searchKeyword}"</strong>
+          </span>
+          <button
+            onClick={() => setSearchKeyword("")}
+            className="text-xs text-blue-600 hover:underline"
+          >
+            Limpar busca
+          </button>
+        </div>
+      )}
+
+      {filteredTools.length === 0 && searchKeyword ? (
+        <p className="text-slate-500">Nenhuma ferramenta encontrada para "{searchKeyword}"</p>
+      ) : (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {filteredTools.map((tool) => (
+            <ToolCard
+              key={tool.title}
+              {...tool}
+              itemId={tool.title.toLowerCase().replaceAll(" ", "-")}
+              onTrack={track}
+            />
+          ))}
+        </div>
+      )}
     </main>
   );
 }
