@@ -30,5 +30,20 @@ export function DialogContent({
   );
 }
 
+export function DialogHeader({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div
+      className={cn(
+        "flex flex-col space-y-1.5 text-center sm:text-left mb-2",
+        className
+      )}
+      {...props}
+    />
+  );
+}
+
 export const DialogTitle = DialogPrimitive.Title;
 export const DialogDescription = DialogPrimitive.Description;

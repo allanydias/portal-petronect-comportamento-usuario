@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { SearchBox } from "@/components/common/SearchBox";
 import { TrainingCard } from "@/components/training/TrainingCard";
+import { VideoTutorialCard } from "@/components/training/VideoTutorialCard";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTracking } from "@/hooks/useTracking";
@@ -84,14 +85,13 @@ export function TrainingPage() {
       <section>
         <h2 className="mb-4 text-xl font-bold">Tutoriais em vídeo</h2>
         <div className="grid gap-4 md:grid-cols-3">
-          {videos.map(([title, description, category, interest]) => (
-            <TrainingCard
+          {videos.map(([title, description, meta, interest]) => (
+            <VideoTutorialCard
               key={title}
               title={title}
               description={description}
-              category={category}
-              buttonLabel={t("common.watch")}
-              eventName="video_start"
+              category={meta.split(" · ")[0]}
+              durationLabel={meta.split(" · ")[1]}
               interest={interest}
               itemId={title.toLowerCase().replaceAll(" ", "-")}
               onTrack={track}

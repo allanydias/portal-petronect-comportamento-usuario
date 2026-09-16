@@ -1,17 +1,16 @@
 import { useState } from "react";
-import { BookOpen } from "lucide-react";
+import { PlayCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import type { EventName } from "@/schemas/event";
-import { GuideModal } from "./GuideModal";
+import { VideoModal } from "./VideoModal";
 
-interface TrainingCardProps {
+interface VideoTutorialCardProps {
   title: string;
   category: string;
   description: string;
-  buttonLabel: string;
-  eventName: EventName;
+  durationLabel: string;
   interest: string;
   itemId: string;
   onTrack: (args: {
@@ -22,26 +21,25 @@ interface TrainingCardProps {
   }) => unknown;
 }
 
-export function TrainingCard({
+export function VideoTutorialCard({
   title,
   category,
   description,
-  buttonLabel,
-  eventName,
+  durationLabel,
   interest,
   itemId,
   onTrack,
-}: TrainingCardProps) {
-  const [modalOpen, setModalOpen] = useState(false);
+}: VideoTutorialCardProps) {
+  const [open, setOpen] = useState(false);
 
   const handleOpen = () => {
     void onTrack({
-      eventName,
+      eventName: "video_start",
       section: category,
       itemId,
       interest,
     });
-    setModalOpen(true);
+    setOpen(true);
   };
 
   return (
@@ -49,8 +47,9 @@ export function TrainingCard({
       <Card className="flex flex-col justify-between p-4">
         <div>
           <CardHeader className="p-0 pb-2">
-            <div className="flex items-center justify-between gap-2">
+            <div className="flex items-center gap-2 text-xs text-muted-foreground">
               <Badge variant="secondary">{category}</Badge>
+              <span>{durationLabel}</span>
             </div>
             <CardTitle className="text-lg mt-2">{title}</CardTitle>
           </CardHeader>
@@ -60,18 +59,19 @@ export function TrainingCard({
         </div>
         <div className="pt-4">
           <Button variant="outline" className="w-full gap-2" onClick={handleOpen}>
-            <BookOpen className="h-4 w-4" />
-            {buttonLabel}
+            <PlayCircle className="h-4 w-4" />
+            Assistir vídeo
           </Button>
         </div>
       </Card>
 
-      <GuideModal
-        open={modalOpen}
-        onOpenChange={setModalOpen}
+      <VideoModal
+        open={open}
+        onOpenChange={setOpen}
         title={title}
         category={category}
         description={description}
+        durationLabel={durationLabel}
       />
     </>
   );
